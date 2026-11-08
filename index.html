@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#11101b">
+<title>Suno Prompt Architect — Studio musical</title>
+<style>
+:root{--bg:#0d0c14;--panel:#171622;--panel2:#201e2e;--line:#302d42;--text:#f4f1ff;--muted:#aaa5bd;--purple:#a78bfa;--pink:#e879f9;--cyan:#67e8f9;--green:#86efac;--shadow:0 18px 60px #0005}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#30204b 0,transparent 35%),radial-gradient(ellipse at 90% 20%,#172b45 0,transparent 30%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}.app{max-width:1180px;margin:auto;padding:26px 20px 60px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{display:flex;gap:13px;align-items:center}.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,#8b5cf6,#d946ef);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 30px #a855f755}.eyebrow{color:var(--purple);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.brand h1{font-size:20px;margin:0;letter-spacing:-.04em}.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.hero{padding:30px;border:1px solid #ffffff18;border-radius:25px;background:linear-gradient(115deg,#241c38dd,#171a2bdd);box-shadow:var(--shadow);position:relative;overflow:hidden;margin-bottom:22px}.hero:after{content:"♫";position:absolute;right:38px;top:-40px;font-size:190px;color:#ffffff08;pointer-events:none}.hero h2{font-size:clamp(27px,4vw,42px);line-height:1.08;letter-spacing:-.05em;margin:8px 0 12px;max-width:700px}.hero p{color:var(--muted);max-width:690px;margin:0}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.chip{border:1px solid #ffffff20;background:#ffffff0a;color:#ddd6fe;border-radius:99px;padding:6px 11px;font-size:12px}
+.layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:20px;align-items:start}.main,.side{display:grid;gap:16px}.card{background:linear-gradient(160deg,#1b1928,#15141f);border:1px solid var(--line);border-radius:20px;padding:21px;box-shadow:0 8px 30px #0002}.card h3{margin:0 0 5px;font-size:17px;letter-spacing:-.02em}.sub{color:var(--muted);font-size:13px;margin:0 0 16px}.section-title{display:flex;align-items:center;gap:10px;margin-bottom:7px}.num{display:grid;place-items:center;width:29px;height:29px;border-radius:10px;background:#a78bfa20;color:#c4b5fd;font-size:12px;font-weight:800}
+label{display:block;font-size:13px;color:#d8d3e7;font-weight:650;margin:13px 0 7px}input[type=text],textarea,select{width:100%;background:#100f19;border:1px solid var(--line);border-radius:11px;color:var(--text);padding:11px 12px;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--purple);box-shadow:0 0 0 3px #a78bfa20}textarea{resize:vertical;min-height:88px}::placeholder{color:#716c82}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.genre-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.genre{border:1px solid var(--line);border-radius:13px;padding:11px;background:#11101a;transition:.2s}.genre.active{border-color:#9b83ee;background:#29213e}.genre-head{display:flex;align-items:flex-start;gap:9px}.genre input{accent-color:#a78bfa;margin-top:4px}.genre strong{font-size:13px;display:block}.genre small{font-size:11px;color:var(--muted);display:block;line-height:1.35;margin-top:2px}.weight{display:none;align-items:center;gap:8px;margin:10px 0 0 24px}.genre.active .weight{display:flex}.weight input{flex:1;accent-color:#a78bfa}.weight output{font-size:12px;color:#ddd6fe;min-width:34px;text-align:right}
+.pills{display:flex;flex-wrap:wrap;gap:8px}.pill{border:1px solid var(--line);background:#11101a;color:#c8c3d5;border-radius:99px;padding:7px 11px;font-size:12px}.pill.selected{border-color:var(--purple);background:#35284f;color:white}
+.radio-list{display:grid;gap:8px}.radio{display:flex;align-items:center;gap:9px;background:#11101a;border:1px solid var(--line);border-radius:11px;padding:9px 11px;font-size:13px;color:#ddd8e9}.radio input{accent-color:#a78bfa}
+.range-row{display:flex;align-items:center;gap:12px}.range-row input{flex:1;accent-color:#a78bfa}.range-row output{min-width:44px;text-align:right;color:#ddd6fe;font-weight:700}
+.instrument-grid{display:flex;flex-wrap:wrap;gap:7px}.instrument{border:1px solid var(--line);background:#11101a;color:#c9c3d9;border-radius:9px;padding:6px 9px;font-size:12px}.instrument:hover{border-color:var(--purple)}
+.tabs{display:flex;gap:6px;background:#100f19;padding:5px;border-radius:12px}.tab{flex:1;border:0;background:transparent;color:var(--muted);padding:9px 7px;border-radius:9px;font-size:12px;font-weight:700}.tab.active{background:#35284f;color:white}
+.output{background:#100f19;border:1px solid var(--line);border-radius:13px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;color:#e5e0f2;font-size:12px;line-height:1.65;min-height:120px;max-height:450px;overflow:auto}.output-label{display:flex;align-items:center;justify-content:space-between;margin:15px 0 8px}.output-label strong{font-size:13px}.mini{color:var(--muted);font-size:11px}
+.btn{border:1px solid var(--line);background:#252235;color:white;border-radius:11px;padding:10px 13px;font-size:13px;font-weight:700;transition:.18s}.btn:hover{filter:brightness(1.2);transform:translateY(-1px)}.btn.primary{background:linear-gradient(110deg,#8b5cf6,#c026d3);border:0;box-shadow:0 8px 24px #9333ea33}.btn.ghost{background:#ffffff08}.btn.small{padding:7px 10px;font-size:11px}.btn.full{width:100%;margin-top:9px}.btnrow{display:flex;gap:8px;flex-wrap:wrap}.summary{border:1px solid #8b5cf655;background:#a78bfa0c;padding:12px;border-radius:12px;font-size:12px;color:#dcd4f4}.summary b{color:white}.footer{text-align:center;color:#777188;font-size:11px;margin-top:22px}
+details{border:1px solid var(--line);border-radius:12px;padding:12px;background:#11101a}summary{cursor:pointer;font-size:13px;font-weight:700;color:#ddd6e9}.hidden{display:none!important}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.side{grid-row:auto}.hero{padding:23px}.hero:after{right:5px;font-size:130px}}
+@media(max-width:520px){.app{padding:15px 12px 40px}.grid2,.genre-grid{grid-template-columns:1fr}.card{padding:16px}.top-actions .btn{font-size:11px;padding:8px}.brand h1{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><div class="logo">♫</div><div><div class="eyebrow">Creative music lab</div><h1>Suno Prompt Architect</h1></div></div>
+ <div class="top-actions"><button class="btn ghost small" id="saveBtn">↧ Sauvegarder</button><button class="btn ghost small" id="resetBtn">↺ Réinitialiser</button></div>
+</header>
+<section class="hero">
+ <div class="eyebrow">Votre studio de création musicale</div>
+ <h2>Imagine. Compose.<br><span style="background:linear-gradient(90deg,#c4b5fd,#f0abfc);background-clip:text;color:transparent">Donne vie au son.</span></h2>
+ <p>Compose des prompts Suno précis en combinant genres, émotions, voix, instruments et inspirations personnelles. Tes résultats sont séparés pour les champs Style, Lyrics et Exclude Styles.</p>
+ <div class="chips"><span class="chip">✦ Multi-genres</span><span class="chip">♫ Paroles & inspirations</span><span class="chip">◈ Réglages avancés</span><span class="chip">⤴ Copie en un clic</span></div>
+</section>
+<div class="layout">
+<div class="main">
+<section class="card">
+ <div class="section-title"><span class="num">01</span><h3>Identité musicale</h3></div><p class="sub">Sélectionne plusieurs genres et règle leur poids relatif.</p>
+ <label for="songTitle">Titre provisoire</label><input id="songTitle" type="text" placeholder="Ex. Le Royaume des Ombres">
+ <div class="genre-grid" id="genreGrid"></div>
+ <div class="summary" id="blendSummary" style="margin-top:12px">Sélectionne tes genres pour composer ton mélange.</div>
+ <label for="subgenres">Sous-genres et nuances</label><input id="subgenres" type="text" value="Epic rap, symphonic hip-hop" placeholder="Ex. Dark trap, Celtic fantasy, cinematic...">
+</section>
+<section class="card">
+ <div class="section-title"><span class="num">02</span><h3>Univers & émotions</h3></div>
+ <label>Ambiance principale</label><div class="pills" id="moodPills"></div>
+ <label for="emotion">Émotions à transmettre</label><input id="emotion" type="text" value="Triumph, determination, nostalgia, hope">
+ <label>Progression musicale</label><div class="radio-list" id="energyList"></div>
+ <label>Époque & esthétique</label><div class="pills" id="eraPills"></div>
+</section>
+<section class="card">
+ <div class="section-title"><span class="num">03</span><h3>Voix & interprétation</h3></div>
+ <label>Identité vocale</label><div class="radio-list" id="voiceList"></div>
+ <label>Technique d'interprétation</label><div class="pills" id="deliveryPills"></div>
+ <label for="vocalFX">Effets & traitement vocal</label><input id="vocalFX" type="text" value="Natural studio vocals, subtle reverb, layered harmonies">
+ <label>Langue</label><div class="pills" id="languagePills"></div>
+</section>
+<section class="card">
+ <div class="section-title"><span class="num">04</span><h3>Composition & instruments</h3></div>
+ <label>Format musical</label><div class="radio-list" id="formatList"></div>
+ <label>Tempo</label><div class="pills" id="tempoPills"></div>
+ <label for="instruments">Instruments et sonorités</label><textarea id="instruments">Grand piano, cinematic strings, powerful brass, deep bass, orchestral percussion, choir, atmospheric synths</textarea>
+ <label>Ajouter rapidement un instrument</label><div class="instrument-grid" id="instrumentButtons"></div>
+ <label for="arrangement">Arrangement & évolution instrumentale</label><textarea id="arrangement">Layered arrangement, evolving instrumentation, dramatic transitions and powerful final chorus</textarea>
+</section>
+<section class="card">
+ <div class="section-title"><span class="num">05</span><h3>Inspirations & écriture</h3></div><p class="sub">Colle tes phrases, tes textes, tes idées ou quelques mots. Le brief les intégrera à la création.</p>
+ <label for="theme">Thème ou histoire</label><textarea id="theme" placeholder="Ex. Un guerrier qui traverse les épreuves, un amour perdu, une quête de liberté..."></textarea>
+ <label for="inspiration">Tes phrases et inspirations</label><textarea id="inspiration" style="min-height:155px" placeholder="Colle ici tes phrases, citations, idées ou morceaux de paroles...&#10;&#10;Exemple :&#10;J'ai traversé des guerres où le ciel lui-même semblait saigner.&#10;J'ai porté mon armure comme on porte un cercueil encore ouvert."></textarea>
+ <label>Comment traiter tes phrases ?</label><div class="radio-list" id="integrationList"></div>
+ <label for="lyricsDetail">Qualité d'écriture recherchée</label><textarea id="lyricsDetail">Rich imagery, meaningful metaphors, sophisticated rhymes, coherent storytelling and memorable lines</textarea>
+ <label>Structure de la chanson</label><div class="radio-list" id="structureList"></div>
+</section>
+<section class="card">
+ <div class="section-title"><span class="num">06</span><h3>Production & exclusions</h3></div>
+ <label for="mix">Mixage et mastering</label><textarea id="mix">Wide stereo image, clear vocal presence, deep controlled bass, cinematic depth, professional mastering</textarea>
+ <label for="exclusions">Éléments à exclure</label><textarea id="exclusions">Cheap-sounding presets, muddy mix, excessive autotune, distracting sound effects</textarea>
+ <label for="customExclusions">Exclusions supplémentaires</label><input id="customExclusions" type="text" placeholder="Ex. No female vocals, no acoustic guitar...">
+ <label for="extra">Consignes créatives supplémentaires</label><textarea id="extra" placeholder="Ex. Une introduction qui donne des frissons, une pause avant le refrain final, une fin monumentale..."></textarea>
+</section>
+<section class="card">
+ <div class="section-title"><span class="num">07</span><h3>Paramètres avancés</h3></div>
+ <p class="sub">Valeurs indicatives à reporter dans les contrôles créatifs de Suno lorsqu'ils sont disponibles.</p>
+ <label>Weirdness <span class="mini" id="weirdnessValue">35%</span></label><div class="range-row"><span class="mini">Prévisible</span><input id="weirdness" type="range" min="0" max="100" value="35"><span class="mini">Expérimental</span></div>
+ <label>Style Influence <span class="mini" id="styleValue">80%</span></label><div class="range-row"><span class="mini">Libre</span><input id="styleInfluence" type="range" min="0" max="100" value="80"><span class="mini">Fidèle</span></div>
+</section>
+</div>
+<aside class="side">
+<section class="card" style="position:sticky;top:14px">
+ <div class="section-title"><span class="num">08</span><h3>Générateur de résultats</h3></div><p class="sub">Tes champs se mettent à jour automatiquement.</p>
+ <div class="tabs"><button class="tab active" data-tab="style">Style</button><button class="tab" data-tab="lyrics">Lyrics</button><button class="tab" data-tab="exclude">Exclude</button><button class="tab" data-tab="all">Tout</button></div>
+ <div id="resultPanels"></div>
+ <div class="btnrow" style="margin-top:13px"><button class="btn primary" id="copyAll" style="flex:1">⧉ Copier tout</button><button class="btn" id="copyCurrent">Copier l'onglet</button></div>
+ <button class="btn full" id="downloadBtn">↓ Télécharger le prompt (.txt)</button>
+ <button class="btn full" id="askBtn">✦ Préparer une demande d'optimisation ChatGPT</button>
+ <p class="mini" style="margin:12px 0 0">Astuce : utilise Style of Music dans le champ Style de Suno, tes paroles dans Lyrics et les exclusions dans Exclude Styles.</p>
+</section>
+</aside>
+</div>
+<div class="footer">SUNO PROMPT ARCHITECT · Studio personnel de création · Fichier autonome, aucune donnée envoyée à un serveur.</div>
+</div>
+<script>
+const genres=[
+["rap","Rap / Hip-hop","Boom bap, trap, drill, cloud rap, conscious rap, melodic rap"],
+["orchestral","Orchestral","Epic orchestral, symphonic, cinematic scoring"],
+["pop","Pop","Synth-pop, indie pop, electropop, dance-pop"],
+["rock","Rock","Alternative, hard rock, progressive, indie rock"],
+["metal","Metal","Power metal, symphonic metal, melodic death metal, metalcore"],
+["electro","Electronic","EDM, house, techno, trance, dubstep, drum and bass"],
+["classical","Classical","Baroque, romantic, neo-classical, chamber music"],
+["rnb","R&B / Soul","Neo-soul, contemporary R&B, gospel soul"],
+["cinematic","Film score / OST","Fantasy soundtrack, heroic themes, dark cinematic"],
+["folk","Folk / Acoustic","Celtic, medieval, acoustic folk, world music"],
+["jazz","Jazz / Blues","Smooth jazz, swing, blues, fusion"],
+["ambient","Ambient","Dark ambient, atmospheric, ethereal, drone"],
+["reggae","Reggae / Dub","Roots reggae, dancehall, dub"],["latin","Latin","Flamenco, salsa, reggaeton, bossa nova"],
+["country","Country","Country rock, americana, bluegrass"],["gospel","Gospel","Choir, spiritual, contemporary gospel"],
+["funk","Funk / Disco","Funk, nu-disco, groove, boogie"],["phonk","Phonk","Drift phonk, dark phonk, Memphis rap"],
+["world","World music","Oriental, African, Asian, traditional fusion"],["medieval","Medieval / Fantasy","Medieval tavern, bardic, fantasy folk"],
+["industrial","Industrial","Industrial rock, dark electro, EBM"],["acoustic","Acoustic","Fingerpicked guitar, piano, intimate arrangements"],
+["lofi","Lo-fi","Chillhop, lo-fi hip-hop, nostalgic textures"],["urban","Urban / Dance","Afrobeats, amapiano, dancehall, reggaeton"]
+];
+const moods=["Epic, majestic, emotional, heroic","Dark, mysterious, haunting, melancholic","Romantic, intimate, tender, nostalgic","Aggressive, intense, rebellious, powerful","Dreamlike, magical, ethereal, fantastical","Joyful, uplifting, euphoric, celebratory","Spiritual, solemn, sacred, transcendent","Futuristic, cold, technological, dystopian","Sensual, smooth, elegant, atmospheric"];
+const energies=["Gradual cinematic build-up with an explosive final climax","Immediate high intensity from the opening","Intimate opening, emotional verses and huge chorus","Multiple contrasting movements and dramatic changes","Steady groove and consistent energy throughout","Slow atmospheric evolution with a delicate ending"];
+const eras=["Modern production with timeless cinematic influences","1980s retro-inspired production","1990s and early 2000s sound aesthetic","Medieval and ancient historical atmosphere","Futuristic and experimental sound design","Vintage analog and organic recording aesthetic"];
+const voices=["Deep, powerful male lead vocal","Warm, intimate male vocal","Raspy, gritty male vocal","Expressive female lead vocal","Soft, ethereal female lead vocal","Powerful operatic female vocal","Male and female vocal duet","Grand mixed choir and layered harmonies","No vocals, instrumental only"];
+const deliveries=["Expressive, articulate, emotionally intense","Technical fast rap flow with precise articulation","Melodic rap with sung hooks","Operatic, theatrical and dramatic singing","Whispered, intimate and breathy performance","Powerful belting with soaring sustained notes","Spoken word and narrative storytelling","Aggressive shouting and intense vocal delivery"];
+const languages=["French","English","French and English","Italian","Spanish","No lyrics"];
+const formats=["Full song with lyrics","Instrumental only","Instrumental with occasional vocal passages","Song with spoken passages and singing"];
+const tempos=["Slow tempo, spacious and contemplative","Moderate tempo, dynamic rhythmic variations","Fast tempo, energetic and driving","Very fast tempo, intense and relentless","Changing tempo with dramatic rhythmic shifts"];
+const integrations=["Preserve my original phrases as much as possible, improving only rhythm, rhyme and flow where necessary","Rewrite my phrases to improve rhymes, syllables, flow and musicality without changing their meaning","Use my phrases as creative inspiration and write entirely new lyrics","Keep selected sentences exactly as written and creatively develop the remaining lyrics"];
+const structures=["[Intro] → [Verse 1] → [Pre-Chorus] → [Chorus] → [Verse 2] → [Chorus] → [Bridge] → [Final Chorus] → [Outro]","[Cinematic Intro] → [Rap Verse 1] → [Melodic Chorus] → [Rap Verse 2] → [Instrumental Break] → [Final Chorus] → [Outro]","[Intro] → [Verse 1] → [Verse 2] → [Powerful Chorus] → [Bridge] → [Epic Final Chorus]","[Intro] → [Instrumental Development] → [Main Theme] → [Climax] → [Outro]","Free-form structure with original section variations"];
+const instruments=["Grand piano","Cinematic strings","Cello solo","Epic brass","Choir","Military drums","Electric guitar","Acoustic guitar","Harp","Pipe organ","Synth bass","808 bass","Flute","Violin solo","Taiko drums","Electronic percussion"];
+const state={genre:{rap:60,orchestral:40},tab:"style"};
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function makePills(id,arr,selected=0){document.getElementById(id).innerHTML=arr.map((x,i)=>`<button type="button" class="pill ${i===selected?'selected':''}" data-group="${id}" data-value="${esc(x)}">${esc(x)}</button>`).join("")}
+function makeRadios(id,arr,selected=0){document.getElementById(id).innerHTML=arr.map((x,i)=>`<label class="radio"><input type="radio" name="${id}" value="${esc(x)}" ${i===selected?'checked':''}>${esc(x)}</label>`).join("")}
+function getChoice(id){let el=document.querySelector(`#${id} input:checked`);return el?el.value:""}
+function getPill(id){return document.querySelector(`#${id} .pill.selected`)?.dataset.value||""}
+function renderGenres(){document.getElementById("genreGrid").innerHTML=genres.map(([id,name,desc])=>{let active=id in state.genre;let weight=state.genre[id]??50;return `<div class="genre ${active?'active':''}" data-genre="${id}"><div class="genre-head"><input type="checkbox" data-check="${id}" ${active?'checked':''}><div><strong>${name}</strong><small>${desc}</small></div></div><div class="weight"><input type="range" min="0" max="100" step="5" value="${weight}" data-weight="${id}"><output>${weight}%</output></div></div>`}).join("");updateBlend()}
+function updateBlend(){let entries=Object.entries(state.genre),total=entries.reduce((s,[,v])=>s+v,0);let str=entries.map(([id,v])=>{let g=genres.find(x=>x[0]===id);return `${g[1]} ${Math.round(total?v/total*100:0)}%`}).join(" · ");document.getElementById("blendSummary").innerHTML=entries.length?`<b>Ton mélange :</b> ${esc(str)} <span style="color:#aaa5bd">— proportions normalisées à 100 %</span>`:"Sélectionne tes genres pour composer ton mélange."}
+renderGenres();makePills("moodPills",moods,0);makeRadios("energyList",energies,0);makePills("eraPills",eras,0);makeRadios("voiceList",voices,0);makePills("deliveryPills",deliveries,0);makePills("languagePills",languages,0);makeRadios("formatList",formats,0);makePills("tempoPills",tempos,1);makeRadios("integrationList",integrations,0);makeRadios("structureList",structures,0);
+document.getElementById("instrumentButtons").innerHTML=instruments.map(x=>`<button class="instrument" data-instrument="${esc(x)}">+ ${esc(x)}</button>`).join("");
+function val(id){return document.getElementById(id).value.trim()}
+function selectedGenres(){let entries=Object.entries(state.genre),sum=entries.reduce((s,[,v])=>s+v,0);return entries.map(([id,v])=>{let g=genres.find(x=>x[0]===id);return `${g[1]} (${Math.round(sum?v/sum*100:0)}% influence)`}).join(", ")}
+function outputs(){
+ const fmt=getChoice("formatList"),inspo=val("inspiration"),theme=val("theme");
+ const style=`Original professionally produced song. Primary genres and influence: ${selectedGenres()||"Choose a coherent musical identity"}. Subgenres: ${val("subgenres")}. Mood: ${getPill("moodPills")}. Emotional palette: ${val("emotion")}. Musical progression: ${getChoice("energyList")}. Era and aesthetic: ${getPill("eraPills")}. Tempo: ${getPill("tempoPills")}. Vocal identity: ${getChoice("voiceList")}. Vocal delivery: ${getPill("deliveryPills")}. Vocal processing: ${val("vocalFX")}. Language: ${getPill("languagePills")}. Instrumentation: ${val("instruments")}. Arrangement: ${val("arrangement")}. Production and mixing: ${val("mix")}. Blend all genres naturally with a clear hierarchy, coherent transitions, memorable melodic identity, dynamic development and emotionally impactful conclusion. ${val("extra")}`;
+ const brief=`Write original ${getPill("languagePills")} song lyrics about: ${theme||"Develop a coherent and emotionally engaging subject based on the musical direction"}. ${val("lyricsDetail")}. Structure: ${getChoice("structureList")}. Inspiration to integrate:\n${inspo||"No supplied phrases; create original lyrics."}\nIntegration instructions: ${getChoice("integrationList")}. Maintain a consistent narrative, natural phrasing, singable syllable patterns, strong rhymes and a memorable chorus.`;
+ const lyric=fmt==="Instrumental only"?"Instrumental composition. No vocals or lyrics.":inspo||brief;
+ const exclude=[val("exclusions"),val("customExclusions")].filter(Boolean).join(", ");
+ const all=`SONG TITLE: ${val("songTitle")||"To be determined"}\n\nSTYLE OF MUSIC:\n${style}\n\nLYRICS:\n${lyric}\n\nEXCLUDE STYLES:\n${exclude||"None specified"}\n\nCREATIVE SETTINGS (where available):\nWeirdness: ${val("weirdness")}%\nStyle Influence: ${val("styleInfluence")}%\n\nLYRICAL CREATIVE BRIEF:\n${brief}`;
+ return {style,lyric,brief,exclude,all,fmt};
+}
+function renderResults(){let o=outputs(),panels=document.getElementById("resultPanels");let html="";
+ const block=(title,content,key,tip="")=>`<div class="output-label"><strong>${title}</strong><button class="btn small" data-copy="${key}">⧉ Copier</button></div><div class="output">${esc(content||"Aucun contenu défini.")}</div>${tip?`<p class="mini">${tip}</p>`:""}`;
+ if(state.tab==="style")html=block("STYLE OF MUSIC",o.style,"style","À coller dans le champ Style de Suno.");
+ if(state.tab==="lyrics")html=block("LYRICS",o.lyric,"lyric",o.fmt==="Instrumental only"?"Laisse le champ Lyrics vide et active Instrumental dans Suno.":(val("inspiration")?"Tes inspirations sont affichées telles quelles.":"Ceci est un brief de rédaction, pas encore des paroles finales."));
+ if(state.tab==="exclude")html=block("EXCLUDE STYLES",o.exclude,"exclude","À coller dans Exclude Styles si cette option est disponible.");
+ if(state.tab==="all")html=block("CONFIGURATION COMPLÈTE",o.all,"all","Les champs sont séparés pour faciliter leur utilisation.");
+ panels.innerHTML=html;
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===state.tab));
+}
+function copy(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t).then(()=>toast("Copié dans le presse-papiers !")).catch(()=>fallbackCopy(t));fallbackCopy(t)}
+function fallbackCopy(t){let a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");toast("Copié dans le presse-papiers !")}catch(e){toast("Copie impossible : sélectionne le texte manuellement.")}a.remove()}
+function toast(msg){let n=document.getElementById("toast");if(!n){n=document.createElement("div");n.id="toast";n.style.cssText="position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#35284f;color:white;padding:11px 17px;border:1px solid #a78bfa;border-radius:12px;z-index:99;box-shadow:0 8px 30px #0008;font-size:13px";document.body.appendChild(n)}n.textContent=msg;n.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>n.style.display="none",2200)}
+document.addEventListener("click",e=>{
+ let tab=e.target.closest("[data-tab]");if(tab){state.tab=tab.dataset.tab;renderResults();return}
+ let pill=e.target.closest(".pill");if(pill){let group=pill.dataset.group;document.querySelectorAll(`#${group} .pill`).forEach(x=>x.classList.remove("selected"));pill.classList.add("selected");renderResults();return}
+ let inst=e.target.closest("[data-instrument]");if(inst){let t=document.getElementById("instruments");let name=inst.dataset.instrument;if(!t.value.includes(name))t.value+=(t.value?", ":"")+name;renderResults();return}
+ let cp=e.target.closest("[data-copy]");if(cp){let o=outputs();copy(cp.dataset.copy==="lyric"?(o.fmt==="Instrumental only"?"":o.lyric):o[cp.dataset.copy]);return}
+});
+document.addEventListener("change",e=>{
+ if(e.target.matches("[data-check]")){let id=e.target.dataset.check;if(e.target.checked)state.genre[id]=50;else delete state.genre[id];renderGenres();renderResults()}
+ else renderResults();
+});
+document.addEventListener("input",e=>{
+ if(e.target.matches("[data-weight]")){let id=e.target.dataset.weight;state.genre[id]=+e.target.value;e.target.parentElement.querySelector("output").textContent=e.target.value+"%";updateBlend()}
+ if(e.target.id==="weirdness")document.getElementById("weirdnessValue").textContent=e.target.value+"%";
+ if(e.target.id==="styleInfluence")document.getElementById("styleValue").textContent=e.target.value+"%";
+ renderResults();
+});
+document.getElementById("copyAll").onclick=()=>copy(outputs().all);
+document.getElementById("copyCurrent").onclick=()=>{let o=outputs();copy(state.tab==="all"?o.all:state.tab==="lyrics"?(o.fmt==="Instrumental only"?"":o.lyric):state.tab==="exclude"?o.exclude:o.style)};
+document.getElementById("downloadBtn").onclick=()=>{let blob=new Blob([outputs().all],{type:"text/plain;charset=utf-8"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(val("songTitle")||"suno-prompt").replace(/[^a-z0-9-_]/gi,"-")+".txt";a.click();URL.revokeObjectURL(a.href);toast("Fichier texte téléchargé.")};
+document.getElementById("askBtn").onclick=()=>copy("Optimise et finalise cette configuration pour Suno AI. Si des paroles sont demandées, écris une chanson complète avec rimes, métrique, structure et indications d'interprétation. Respecte mes phrases d'inspiration et leur sens.\n\n"+outputs().all);
+const fields=["songTitle","subgenres","emotion","vocalFX","instruments","arrangement","theme","inspiration","lyricsDetail","mix","exclusions","customExclusions","extra","weirdness","styleInfluence"];
+document.getElementById("saveBtn").onclick=()=>{let data={fields:Object.fromEntries(fields.map(id=>[id,document.getElementById(id).value])),genre:state.genre,choices:{}};["energyList","voiceList","formatList","integrationList","structureList"].forEach(id=>data.choices[id]=getChoice(id));["moodPills","eraPills","deliveryPills","languagePills","tempoPills"].forEach(id=>data.choices[id]=getPill(id));let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="suno-studio-profil.json";a.click();URL.revokeObjectURL(a.href);toast("Configuration sauvegardée sur ton ordinateur.")};
+document.getElementById("resetBtn").onclick=()=>{if(!confirm("Réinitialiser tous les réglages ?"))return;location.reload()};
+renderResults();
+</script>
+</body>
+</html>
